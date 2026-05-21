@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu22.04 AS base_cuda
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 AS base_cuda
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -20,11 +20,10 @@ RUN apt-get update && \
       sudo \
       curl \
       git \
-      nano \
-      libusb-1.0-0 && \
+      nano && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install --upgrade pip setuptools wheel
+RUN python3 -m pip install --upgrade pip setuptools wheel
 
 WORKDIR /workspace
 
@@ -38,16 +37,9 @@ RUN groupadd --gid $gid $group && \
     chmod u+w /etc/sudoers && echo "$user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && chmod -w /etc/sudoers && \
     chown -R $user:$group /workspace
 
-# Diagnostics
-RUN echo "=== Python/pip info ===" && \
-    python3 --version && \
-    pip3 --version && \
-    python3 -c "import pip; print(pip.main(['debug', '--verbose']))" 2>/dev/null || \
-    pip3 debug --verbose 2>&1 | head -30
-
 # Install Hailo wheels
 COPY hailort-4.23.0-cp310-cp310-linux_x86_64.whl /tmp/hailort.whl
-RUN pip3 install --verbose /tmp/hailort.whl && rm /tmp/hailort.whl
+RUN python3 -m pip install /tmp/hailort.whl && rm /tmp/hailort.whl
 
 COPY hailo_dataflow_compiler-3.33.1-py3-none-linux_x86_64.whl /tmp/hailo_dfc.whl
-RUN pip3 install /tmp/hailo_dfc.whl && rm /tmp/hailo_dfc.whl
+RUN python3 -m pip install /tmp/hailo_dfc.whl && rm /tmp/hailo_dfc.whl
