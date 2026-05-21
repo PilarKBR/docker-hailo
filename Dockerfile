@@ -1,8 +1,9 @@
-FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04 AS base_cuda
+FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu24.04 AS base_cuda
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 RUN apt-get update && \
     apt-get install -y \
@@ -11,7 +12,7 @@ RUN apt-get update && \
       python3-tk \
       graphviz \
       libgraphviz-dev \
-      libgl1-mesa-glx \
+      libgl1 \
       python-is-python3 \
       build-essential \
       sudo \
