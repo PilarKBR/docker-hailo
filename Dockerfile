@@ -40,3 +40,11 @@ RUN groupadd --gid $gid $group && \
     adduser --uid $uid --gid $gid --shell /bin/bash --disabled-password --gecos "" $user && \
     chmod u+w /etc/sudoers && echo "$user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && chmod -w /etc/sudoers && \
     chown -R $user:$group /workspace
+
+# Install Hailo wheels from GitHub Releases
+RUN curl -L -o /tmp/hailort.whl \
+      https://github.com/PilarKBR/docker-hailo/releases/download/wheels-v0/hailort-4.23.0-cp310-cp310-linux_x86_64.whl && \
+    curl -L -o /tmp/hailo_dfc.whl \
+      https://github.com/PilarKBR/docker-hailo/releases/download/wheels-v0/hailo_dataflow_compiler-3.33.1-py3-none-linux_x86_64.whl && \
+    pip install /tmp/hailort.whl /tmp/hailo_dfc.whl && \
+    rm /tmp/hailort.whl /tmp/hailo_dfc.whl
