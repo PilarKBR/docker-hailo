@@ -38,9 +38,16 @@ RUN groupadd --gid $gid $group && \
     chmod u+w /etc/sudoers && echo "$user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && chmod -w /etc/sudoers && \
     chown -R $user:$group /workspace
 
-# Install Hailo wheels (pip3 on Ubuntu 22.04 = Python 3.10)
+# Diagnostics
+RUN echo "=== Python/pip info ===" && \
+    python3 --version && \
+    pip3 --version && \
+    python3 -c "import pip; print(pip.main(['debug', '--verbose']))" 2>/dev/null || \
+    pip3 debug --verbose 2>&1 | head -30
+
+# Install Hailo wheels
 COPY hailort-4.23.0-cp310-cp310-linux_x86_64.whl /tmp/hailort.whl
-RUN pip3 install /tmp/hailort.whl && rm /tmp/hailort.whl
+RUN pip3 install --verbose /tmp/hailort.whl && rm /tmp/hailort.whl
 
 COPY hailo_dataflow_compiler-3.33.1-py3-none-linux_x86_64.whl /tmp/hailo_dfc.whl
 RUN pip3 install /tmp/hailo_dfc.whl && rm /tmp/hailo_dfc.whl
