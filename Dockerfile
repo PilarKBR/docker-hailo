@@ -5,12 +5,14 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa -y && \
+    apt-get update && \
     apt-get install -y \
       # see: the Hailo DFC user guide
       python3.10 \
       python3.10-dev \
       python3.10-venv \
-
       python3-pip \
       python3-tk \
       graphviz \
