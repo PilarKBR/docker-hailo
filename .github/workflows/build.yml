@@ -12,8 +12,8 @@ jobs:
 
       - name: Download Hailo wheels from GitHub Release
         run: |
-          curl -L -o hailort-4.23.0-cp312-cp312-linux_x86_64.whl \
-            https://github.com/PilarKBR/docker-hailo/releases/download/wheels-v0/hailort-4.23.0-cp312-cp312-linux_x86_64.whl
+          curl -L -o hailort-4.23.0-cp310-cp310-linux_x86_64.whl \
+            https://github.com/PilarKBR/docker-hailo/releases/download/wheels-v0/hailort-4.23.0-cp310-cp310-linux_x86_64.whl
           curl -L -o hailo_dataflow_compiler-3.33.1-py3-none-linux_x86_64.whl \
             https://github.com/PilarKBR/docker-hailo/releases/download/wheels-v0/hailo_dataflow_compiler-3.33.1-py3-none-linux_x86_64.whl
 
