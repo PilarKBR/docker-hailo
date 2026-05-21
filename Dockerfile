@@ -29,7 +29,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # update pip
-RUN python3 -m pip install --upgrade pip setuptools wheel
+RUN python3.10 -m ensurepip --upgrade && \
+    python3.10 -m pip install --upgrade pip setuptools wheel
 
 WORKDIR /workspace
 
