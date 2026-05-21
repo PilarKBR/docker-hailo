@@ -28,9 +28,9 @@ RUN apt-get update && \
     # clean up
     rm -rf /var/lib/apt/lists/*
 
-# update pip
-RUN python3.10 -m ensurepip --upgrade && \
-    python3.10 -m pip install --upgrade pip setuptools wheel
+# install pip for python3.10
+RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10 && \
+    python3.10 -m pip install --upgrade setuptools wheel
 
 WORKDIR /workspace
 
