@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.8.0-cudnn9-devel-ubuntu24.04 AS base_cuda
+FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu24.04 AS base_cuda
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONDONTWRITEBYTECODE=1
