@@ -1,13 +1,10 @@
-FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu24.04 AS base_cuda
+FROM nvidia/cuda:12.8.0-cudnn-devel-ubuntu22.04 AS base_cuda
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 RUN apt-get update && \
-    apt-get install -y software-properties-common && \
-    add-apt-repository ppa:deadsnakes/ppa -y && \
-    apt-get update && \
     apt-get install -y \
       # see: the Hailo DFC user guide
       python3.10 \
@@ -18,7 +15,7 @@ RUN apt-get update && \
       python3-tk \
       graphviz \
       libgraphviz-dev \
-      libgl1 \
+      libgl1-mesa-glx \
       # utilities
       python-is-python3 \
       build-essential \
@@ -29,11 +26,8 @@ RUN apt-get update && \
     # clean up
     rm -rf /var/lib/apt/lists/*
 
-# install pip for python3.10
-RUN curl -sS https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && \
-    python3.10 /tmp/get-pip.py && \
-    rm /tmp/get-pip.py && \
-    python3.10 -m pip install --upgrade setuptools wheel
+# update pip
+RUN python3 -m pip install --upgrade pip setuptools wheel
 
 WORKDIR /workspace
 
