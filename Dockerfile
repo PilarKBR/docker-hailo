@@ -37,9 +37,18 @@ RUN groupadd --gid $gid $group && \
     chmod u+w /etc/sudoers && echo "$user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && chmod -w /etc/sudoers && \
     chown -R $user:$group /workspace
 
-# Install Hailo wheels
+# Pre-install hailort dependencies (avoids downloading during wheel install)
+RUN python3 -m pip install \
+      argcomplete \
+      contextlib2 \
+      future \
+      netaddr \
+      netifaces \
+      "numpy<2"
+
+# Install hailort wheel without re-downloading deps
 COPY hailort-4.23.0-cp310-cp310-linux_x86_64.whl /tmp/hailort.whl
-RUN python3 -m pip install /tmp/hailort.whl && rm /tmp/hailort.whl
+RUN python3 -m pip install --no-deps /tmp/hailort.whl && rm /tmp/hailort.whl
 
 COPY hailo_dataflow_compiler-3.33.1-py3-none-linux_x86_64.whl /tmp/hailo_dfc.whl
 RUN python3 -m pip install /tmp/hailo_dfc.whl && rm /tmp/hailo_dfc.whl
