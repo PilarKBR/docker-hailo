@@ -10,12 +10,12 @@ RUN apt-get update && \
       python3.10 \
       python3.10-dev \
       python3.10-venv \
-      python3.10-distutils \
+
       python3-pip \
       python3-tk \
       graphviz \
       libgraphviz-dev \
-      libgl1-mesa-glx \
+      libgl1 \
       # utilities
       python-is-python3 \
       build-essential \
