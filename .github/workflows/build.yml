@@ -9,11 +9,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Download Hailo wheels from GitHub Release
+        run: |
+          curl -L -o hailort-4.23.0-cp310-cp310-linux_x86_64.whl \
+            https://github.com/PilarKBR/docker-hailo/releases/download/wheels-v0/hailort-4.23.0-cp310-cp310-linux_x86_64.whl
+          curl -L -o hailo_dataflow_compiler-3.33.1-py3-none-linux_x86_64.whl \
+            https://github.com/PilarKBR/docker-hailo/releases/download/wheels-v0/hailo_dataflow_compiler-3.33.1-py3-none-linux_x86_64.whl
+
       - uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - uses: docker/build-push-action@v5
         with:
+          context: .
           push: true
           tags: pilarkbr28/hailo_compiler:v0
