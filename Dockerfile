@@ -13,6 +13,7 @@ RUN apt-get update && \
       python3.10 \
       python3.10-dev \
       python3.10-venv \
+      python3.10-distutils \
       python3-pip \
       python3-tk \
       graphviz \
@@ -29,7 +30,9 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # install pip for python3.10
-RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10 && \
+RUN curl -sS https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py && \
+    python3.10 /tmp/get-pip.py && \
+    rm /tmp/get-pip.py && \
     python3.10 -m pip install --upgrade setuptools wheel
 
 WORKDIR /workspace
